@@ -6,3 +6,7 @@ This repository is for **educational and research purposes only**.<br>
 This repository does **not** promote piracy or illegal distribution of copyrighted material.
 
 > “They treat curiosity like a crime but knowledge is not illegal.” ~ fucktendo
+
+## Resources
+This work builds upon the incredible research and documentation by countless others in the community:
+- [WiiUBrew - Title metadata](https://wiiubrew.org/wiki/Title_metadata)

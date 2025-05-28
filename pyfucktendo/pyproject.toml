@@ -1,0 +1,11 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyfucktendo"
+version = "1337"
+dependencies = []
+
+[tool.hatch.build.targets.wheel]
+packages = ["pyfucktendo"]
