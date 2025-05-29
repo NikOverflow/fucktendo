@@ -1,1 +1,1 @@
-from .tmd import TitleMetadata
+from .tmd import TitleType, ContentRecord, TitleMetadata

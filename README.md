@@ -9,4 +9,4 @@ This repository does **not** promote piracy or illegal distribution of copyright
 
 ## Resources
 This work builds upon the incredible research and documentation by countless others in the community:
-- [WiiUBrew - Title metadata](https://wiiubrew.org/wiki/Title_metadata)
+- [WiiBrew - Title metadata](https://wiibrew.org/wiki/Title_metadata) & [WiiUBrew - Title metadata](https://wiiubrew.org/wiki/Title_metadata)
