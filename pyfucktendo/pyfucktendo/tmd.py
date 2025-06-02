@@ -142,19 +142,19 @@ class TitleMetadata:
         while len(signature_issuer) < 64:
             signature_issuer += b"\x00"
         tmd.write(signature_issuer)
-        tmd.write(int.to_bytes(self.__tmd_version, 1, "big"))
-        tmd.write(int.to_bytes(self.__ca_crl_version, 1, "big"))
-        tmd.write(int.to_bytes(self.__signer_crl_version, 1, "big"))
+        tmd.write(self.__tmd_version.to_bytes(1, "big"))
+        tmd.write(self.__ca_crl_version.to_bytes(1, "big"))
+        tmd.write(self.__signer_crl_version.to_bytes(1, "big"))
         tmd.write(self.__unknown) # not 100% sure
         tmd.write(self.__system_version) # help
         tmd.write(binascii.unhexlify(self.__title_id))
         tmd.write(self.__title_type)
-        tmd.write(int.to_bytes(self.__group_id, 2, "big"))
+        tmd.write(self.__group_id.to_bytes(2, "big"))
         tmd.write(self.__unknown_2) # not 100% sure
         tmd.write(self.__access_rights)
-        tmd.write(int.to_bytes(self.__title_version, 2, "big"))
-        tmd.write(int.to_bytes(len(self.__contents), 2, "big"))
-        tmd.write(int.to_bytes(self.__boot_index, 2, "big"))
+        tmd.write(self.__title_version.to_bytes(2, "big"))
+        tmd.write(len(self.__contents).to_bytes(2, "big"))
+        tmd.write(self.__boot_index.to_bytes(2, "big"))
         tmd.write(self.__unknown_3) # not 100% sure
 
         if self.__tmd_version == 1: # i don't care at the moment
@@ -162,9 +162,9 @@ class TitleMetadata:
 
         for content in self.__contents:
             tmd.write(binascii.unhexlify(content.content_id))
-            tmd.write(int.to_bytes(content.index, 2, "big"))
-            tmd.write(int.to_bytes(content.content_type, 2, "big"))
-            tmd.write(int.to_bytes(content.content_size, 8, "big"))
+            tmd.write(content.index.to_bytes(2, "big"))
+            tmd.write(content.content_type.to_bytes(2, "big"))
+            tmd.write(content.content_size.to_bytes(8, "big"))
             tmd.write(content.content_hash)
 
         for certificate in self.__certificates:
