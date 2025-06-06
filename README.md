@@ -11,4 +11,5 @@ This repository does **not** promote piracy or illegal distribution of copyright
 This work builds upon the incredible research and documentation by countless others in the community:
 - [WiiBrew - Title metadata](https://wiibrew.org/wiki/Title_metadata), [WiiUBrew - Title metadata](https://wiiubrew.org/wiki/Title_metadata) & [3dbrew - Title metadata](https://www.3dbrew.org/wiki/Title_metadata)
 - [WiiBrew - Certificate chain](https://wiibrew.org/wiki/Certificate_chain)
+- [3dbrew - Titles](https://www.3dbrew.org/wiki/Titles)
 - [WiiBrew - Ticket](https://wiibrew.org/wiki/Ticket) & [SwitchBrew - Ticket](https://switchbrew.org/wiki/Ticket)

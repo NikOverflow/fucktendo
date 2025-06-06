@@ -26,6 +26,12 @@ class KeyType(Enum):
     RSA_2048 = 0x01
     ECC_B233 = 0x02
 
+class Platform(Enum):
+    WII      = 0x01
+    DSI      = 0x03
+    THREE_DS = 0x04
+    WII_U    = 0x05
+
 @dataclass
 class CertificateRecord:
     signature_type: SignatureType
@@ -111,6 +117,8 @@ class TitleMetadata:
             content_hash = b""
             if self.__tmd_version == 1:
                 content_hash = data.read(32)
+                if self.get_platform() == Platform.WII_U:
+                    content_hash = content_hash[:20]
             elif self.__tmd_version == 0:
                 content_hash = data.read(20)
             self.__contents.append(ContentRecord(content_id, index, content_type, content_size, content_hash))
@@ -166,6 +174,8 @@ class TitleMetadata:
             tmd.write(content.content_type.to_bytes(2, "big"))
             tmd.write(content.content_size.to_bytes(8, "big"))
             tmd.write(content.content_hash)
+            if self.get_platform() == Platform.WII_U:
+                tmd.write(b"\x00" * 12)
 
         for certificate in self.__certificates:
             tmd.write(certificate.signature_type.value.to_bytes(4, "big"))
@@ -230,3 +240,6 @@ class TitleMetadata:
 
     def get_certificates(self) -> List[CertificateRecord]:
         return self.__certificates
+
+    def get_platform(self) -> Platform:
+        return Platform(int.from_bytes(binascii.unhexlify(self.__title_id[:4]), "big"))
