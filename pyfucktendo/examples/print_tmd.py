@@ -28,3 +28,4 @@ if __name__ == "__main__":
         print(f"Contents: {title_metadata.get_contents()}")
         print(f"Certificate Count: {len(title_metadata.get_certificates())}")
         print(f"Certificates: {title_metadata.get_certificates()}")
+        print(f"Platform: {title_metadata.get_platform()}")

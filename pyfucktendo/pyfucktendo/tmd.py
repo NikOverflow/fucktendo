@@ -26,12 +26,6 @@ class KeyType(Enum):
     RSA_2048 = 0x01
     ECC_B233 = 0x02
 
-class Platform(Enum):
-    WII      = 0x01
-    DSI      = 0x03
-    THREE_DS = 0x04
-    WII_U    = 0x05
-
 @dataclass
 class CertificateRecord:
     signature_type: SignatureType
@@ -43,6 +37,12 @@ class CertificateRecord:
     public_key: bytes
     public_exponent: Optional[int]
 
+class Platform(Enum):
+    WII      = 0x01
+    DSI      = 0x03
+    THREE_DS = 0x04
+    WII_U    = 0x05
+
 class TitleMetadata:
     def __init__(self):
         self.__signature_type: SignatureType = SignatureType.RSA_4096_SHA_1
@@ -51,7 +51,7 @@ class TitleMetadata:
         self.__tmd_version: int = 0
         self.__ca_crl_version: int = 0
         self.__signer_crl_version: int = 0
-        self.__unknown: bytes = b"" # not 100% sure
+        self.__reserved: bytes = b""
         self.__system_version: bytes = b"" # help
         self.__title_id: str = ""
         self.__title_type: bytes = b""
@@ -96,7 +96,7 @@ class TitleMetadata:
         self.__tmd_version = int.from_bytes(data.read(1), "big")
         self.__ca_crl_version = int.from_bytes(data.read(1), "big")
         self.__signer_crl_version = int.from_bytes(data.read(1), "big")
-        self.__unknown = data.read(1) # not 100% sure
+        self.__reserved = data.read(1)
         self.__system_version = data.read(8) # help
         self.__title_id = binascii.hexlify(data.read(8)).decode("utf-8")
         self.__title_type = data.read(4)
@@ -153,7 +153,10 @@ class TitleMetadata:
         tmd.write(self.__tmd_version.to_bytes(1, "big"))
         tmd.write(self.__ca_crl_version.to_bytes(1, "big"))
         tmd.write(self.__signer_crl_version.to_bytes(1, "big"))
-        tmd.write(self.__unknown) # not 100% sure
+        if self.get_platform() == Platform.WII_U and int.from_bytes(self.__reserved, "big") == 1:
+            tmd.write(b"\x01")
+        else:
+            tmd.write(b"\x00")
         tmd.write(self.__system_version) # help
         tmd.write(binascii.unhexlify(self.__title_id))
         tmd.write(self.__title_type)
@@ -242,4 +245,7 @@ class TitleMetadata:
         return self.__certificates
 
     def get_platform(self) -> Platform:
-        return Platform(int.from_bytes(binascii.unhexlify(self.__title_id[:4]), "big"))
+        platform = Platform(int.from_bytes(binascii.unhexlify(self.__title_id[:4].replace("0000", "0001")), "big"))
+        if platform == Platform.WII and int.from_bytes(self.__reserved, "big") == 1:
+            platform = Platform.WII_U
+        return platform
