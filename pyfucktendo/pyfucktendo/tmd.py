@@ -101,7 +101,8 @@ class TitleMetadata:
         self.__title_id = binascii.hexlify(data.read(8)).decode("utf-8")
         self.__title_type = data.read(4)
         self.__group_id = int.from_bytes(data.read(2), "big")
-        self.__unknown_2 = data.read(62) # not 100% sure
+        self.__unknown_2 = data.read(44) # not 100% sure
+        data.read(18)
         self.__access_rights = data.read(4)
         self.__title_version = int.from_bytes(data.read(2), "big")
         content_count = int.from_bytes(data.read(2), "big")
@@ -162,6 +163,7 @@ class TitleMetadata:
         tmd.write(self.__title_type)
         tmd.write(self.__group_id.to_bytes(2, "big"))
         tmd.write(self.__unknown_2) # not 100% sure
+        tmd.write(b"\x00" * 18)
         tmd.write(self.__access_rights)
         tmd.write(self.__title_version.to_bytes(2, "big"))
         tmd.write(len(self.__contents).to_bytes(2, "big"))
