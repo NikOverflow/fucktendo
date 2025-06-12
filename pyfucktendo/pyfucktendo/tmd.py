@@ -179,7 +179,7 @@ class TitleMetadata:
             tmd.write(content.content_type.to_bytes(2, "big"))
             tmd.write(content.content_size.to_bytes(8, "big"))
             tmd.write(content.content_hash)
-            if self.get_platform() == Platform.WII_U:
+            if self.__tmd_version == 1 and self.get_platform() == Platform.WII_U:
                 tmd.write(b"\x00" * 12)
 
         for certificate in self.__certificates:
